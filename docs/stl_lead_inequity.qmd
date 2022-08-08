@@ -14,9 +14,8 @@ library(here)
 ```
 
 ```{r}
-stl_lead <- read_delim(here::here("data", 
-                                "stl_blood_lead.csv"), 
-                     delim = ";")
+stl_lead <- read_csv(here::here("data", 
+                                "stl_blood_lead2.csv"))
 # delim reads ";" as columns/separated
 stl_lead
 # clean_names() not especially useful for this.
@@ -25,5 +24,44 @@ stl_lead
 ```{r}
 stl_lead_prop <- stl_lead %>% 
   dplyr::mutate(prop_white = (white / totalPop) * 100)
+```
+
+Plot 
+
+The overall trend for this relationship appears to be a loose negative trend. the white children have less poisoning 
+
+```{r}
+stl_lead_plot <- ggplot(data = stl_lead_prop, 
+                        aes(x = pctElevated, 
+                            y = prop_white)) + 
+  geom_point() + 
+  labs(
+    x = "Proportion of children with elevated blood tracks (%)", 
+    y = "Proportion of white children (%)", 
+    title = "Percentage of white children with elevated blood tracks")
+
+stl_lead_plot
+
+ggsave(plot = stl_lead_plot, here::here("figs", 
+                                        "stl_lead_plot.png"), 
+       width = 6,
+       height = 5)
+```
+
+```{r}
+stl_lead_hist <- ggplot(data = stl_lead_prop, 
+                        aes(x = pctElevated)) +  
+  geom_histogram(fill = "red") + 
+  labs(x = "PCT Elevated", 
+       y = "Frequency", 
+       title = "Frequency of PCT Elevated in children")
+
+stl_lead_hist
+
+ggsave(plot = stl_lead_hist, here::here("figs", 
+                                        "stl_lead_hist.jpg"), 
+       width = 6,
+       height = 5)
+
 ```
 
