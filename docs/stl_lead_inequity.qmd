@@ -1,0 +1,29 @@
+---
+title: "stl_lead_inequity"
+author: "Hailey Veirs"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(skimr)
+library(here)
+
+```
+
+```{r}
+stl_lead <- read_delim(here::here("data", 
+                                "stl_blood_lead.csv"), 
+                     delim = ";")
+# delim reads ";" as columns/separated
+stl_lead
+# clean_names() not especially useful for this.
+```
+
+```{r}
+stl_lead_prop <- stl_lead %>% 
+  dplyr::mutate(prop_white = (white / totalPop) * 100)
+```
+
